@@ -71,4 +71,62 @@ A tree is is actually a type of graph, but not all graph are trees.
 A graph is simply a collection of nodes with edges between them.
 * Graphs can be either directed or undirected.While directed edges are like a one-way street, undirected edges are like a two-way street.
 * The graph might consist of multiple isolated subgraphs. If there is a path to every pair of vertices, it is called a "Connected graph".
-* The graph can also have cycles (or not). An "acyclic graph" is one without cycles. 
+* The graph can also have cycles (or not). An "acyclic graph" is one without cycles.
+
+## Adjacency list
+A simple calss definition for a graph node could look essentially the same as a tree node.
+
+```java
+class Graph {
+    public Node[] nodes;
+}
+
+class Node {
+    public String name;
+    public Node[] children;
+}
+```
+## Graph Search
+The two common ways to search a graph are depth-first-search and breadth-first search.
+
+In *depth-first search (DFS)*, we start at the root (or another arbitrarily selected node) and explore each branch completely before moving on the next branch. That is, we go deep first before we go wide.
+
+In *breadth-first search (BFS)*, we start at the root (or another arbitrarily selected node) and explore each neighbor before going on to any of their children. That is, we go wide before we go deep.
+
+### *Depth-First Search (DFS)*
+The pseudocode below implements DFS.
+```
+void search(Node root) {
+    if(root == null) return;
+    visit(root);
+    root.visited = true;
+    for each (Node n in root.adjacent) {
+        if (n.visited == false) {
+            search(n);
+        }
+    }
+}
+```
+
+### *Breadth-First Search (BFS)*
+BFS is a bit less intuitive, The main tripping point is the (false) assumption that that BFS is recursive . It's not instead, it uses a queue.
+```
+void search(Node root) {
+    Queue queue = new Queue();
+    root.marked = true;
+
+    queue.enqueue(root); //Add to the end of queue
+
+    while(!queue.isEmpty()){
+        Node r = queue.dequeue(); //Remove from the front of the queue
+        visit(r);
+        foreach(Node n in r.adjacent) {
+            if(n.marked == false) {
+                n.marked = true;
+                queue.enqueue(n);
+            }
+        }
+    }
+}
+```
+### Bidirectional search
